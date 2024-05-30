@@ -1,0 +1,16 @@
+server:
+  port: 8980
+spring:
+  datasource:
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://111.161.122.204:56441/policy?useUnicode=true&characterEncoding=utf8
+      username: policy
+      password: NSKi6xM87jpK4PTL
+      initial-size: 1
+      min-idle: 1
+      max-active: 20
+
+mybatis:
+    type-aliases-package: com/example/architecture/demos/web/entity
+    mapper-locations: /mapper/*.xml

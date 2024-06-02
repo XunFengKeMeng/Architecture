@@ -2,10 +2,7 @@ package com.example.architecture.demos.web.controller;
 
 import com.example.architecture.demos.web.dto.*;
 import com.example.architecture.demos.web.entity.*;
-import com.example.architecture.demos.web.service.BookmarkService;
-import com.example.architecture.demos.web.service.SubscribeService;
-import com.example.architecture.demos.web.service.UserInfoService;
-import com.example.architecture.demos.web.service.UserServiceImpl;
+import com.example.architecture.demos.web.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.RedisClusterConfiguration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -30,6 +27,8 @@ public class UserController {
     SubscribeService subscribeService;
     @Autowired
     private StringRedisTemplate redisTemplate;
+    @Autowired
+    UpdateSubService updateSubService;
 
 
     /**
@@ -113,5 +112,17 @@ public class UserController {
                 return new GetSubscribeResponse(201, null, "请求失败");
             }
         }
+    }
+
+    @PostMapping(value = "/subscribe/update")
+    public UpdateSubResponse updateSubscribe(String username, String sub) {
+        try {
+            redisTemplate.opsForValue().set(username, sub);
+            updateSubService.updateSubByUsername(username, sub);
+            return new UpdateSubResponse(200, "订阅成功");
+        } catch (Exception e) {
+            return new UpdateSubResponse(201, "订阅失败");
+        }
+
     }
 }

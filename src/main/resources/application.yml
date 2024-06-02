@@ -10,6 +10,15 @@ spring:
       initial-size: 1
       min-idle: 1
       max-active: 20
+  redis:
+    cluster:
+      nodes:
+        - 150.158.128.134:9001
+        - 150.158.128.134:9002
+        - 150.158.128.134:9003
+        - 150.158.128.134:9004
+        - 150.158.128.134:9005
+        - 150.158.128.134:9006
 
 mybatis:
     type-aliases-package: com/example/architecture/demos/web/entity

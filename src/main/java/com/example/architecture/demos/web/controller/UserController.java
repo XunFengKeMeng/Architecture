@@ -1,21 +1,16 @@
 package com.example.architecture.demos.web.controller;
 
-import com.example.architecture.demos.web.dto.CollectionResponse;
-import com.example.architecture.demos.web.dto.LoginResponse;
-import com.example.architecture.demos.web.dto.PolicyCollection;
-import com.example.architecture.demos.web.dto.UserInfoResponse;
-import com.example.architecture.demos.web.entity.Policy;
-import com.example.architecture.demos.web.entity.PolicyJSON;
-import com.example.architecture.demos.web.entity.UserInfo;
+import com.example.architecture.demos.web.dto.*;
+import com.example.architecture.demos.web.entity.*;
 import com.example.architecture.demos.web.service.BookmarkService;
+import com.example.architecture.demos.web.service.SubscribeService;
 import com.example.architecture.demos.web.service.UserInfoService;
 import com.example.architecture.demos.web.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -27,6 +22,10 @@ public class UserController {
     UserInfoService userInfoSercvice;
     @Autowired
     BookmarkService bookmarkService;
+    @Autowired
+    SubscribeService subscribeService;
+    @Autowired
+    private StringRedisTemplate redisTemplate;
 
 
     /**
@@ -61,6 +60,11 @@ public class UserController {
         return new UserInfoResponse(201,null,"请求失败");
     }
 
+    /**
+     * 查询收藏
+     * @param username
+     * @return
+     */
     @GetMapping(value = "/collection/{username}")
     public CollectionResponse collection(@PathVariable(value = "username")String username) {
         List<Policy> policies = bookmarkService.getPoliciesByUsername(username);
@@ -84,5 +88,24 @@ public class UserController {
             return new CollectionResponse(200, new PolicyCollection(policiesJSON), "请求成功");
         }
         return new CollectionResponse(201,null,"请求失败");
+    }
+
+    @GetMapping(value = "/subscribe/get/{username}")
+    public GetSubscribeResponse getSubscribe(@PathVariable(value = "username")String username) {
+        String sub = redisTemplate.opsForValue().get(username);
+        if(sub != null) {
+            System.out.println("在Redis找到数据");
+            return new GetSubscribeResponse(200, new SubscribeJSON(sub), "请求成功");
+        } else {
+            System.out.println("未在Redis找到数据");
+            sub = subscribeService.getSubscribeByUsername(username);
+            if(sub != null) {
+                System.out.println("在MySQL找到数据");
+                return new GetSubscribeResponse(200, new SubscribeJSON(sub), "请求成功");
+            } else {
+                System.out.println("未在MySQL找到数据");
+                return new GetSubscribeResponse(201, null, "请求失败");
+            }
+        }
     }
 }

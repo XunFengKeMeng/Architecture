@@ -40,10 +40,22 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- Redis -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
-            <scope>test</scope>
+<!--            <scope>test</scope>-->
+        </dependency>
+
+        <dependency>
+            <groupId>io.lettuce</groupId>
+            <artifactId>lettuce-core</artifactId>
+            <version>6.3.0.RELEASE</version> <!-- 或更高版本 -->
+        </dependency>
+        <!--Lombok引入-->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
         </dependency>
 
         <dependency>
@@ -64,6 +76,7 @@
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
 
+        <!-- Shiro -->
         <dependency>
             <groupId>org.apache.shiro</groupId>
             <artifactId>shiro-spring</artifactId>
@@ -74,7 +87,7 @@
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
 
-
+        <!-- 应对javax.persistence不存在的问题 -->
         <dependency>
             <groupId>javax.el</groupId>
             <artifactId>javax.el-api</artifactId>

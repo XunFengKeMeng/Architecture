@@ -7,7 +7,11 @@ import com.example.architecture.demos.web.service.SubscribeService;
 import com.example.architecture.demos.web.service.UserInfoService;
 import com.example.architecture.demos.web.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.connection.RedisClusterConfiguration;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -101,6 +105,8 @@ public class UserController {
             sub = subscribeService.getSubscribeByUsername(username);
             if(sub != null) {
                 System.out.println("在MySQL找到数据");
+                redisTemplate.opsForValue().set(username, sub);
+                System.out.println("将数据写入Redis");
                 return new GetSubscribeResponse(200, new SubscribeJSON(sub), "请求成功");
             } else {
                 System.out.println("未在MySQL找到数据");

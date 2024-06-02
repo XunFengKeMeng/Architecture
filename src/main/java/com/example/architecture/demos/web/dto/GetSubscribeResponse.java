@@ -15,4 +15,28 @@ public class GetSubscribeResponse {
 
     public GetSubscribeResponse() {
     }
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
+    }
+
+    public SubscribeJSON getData() {
+        return data;
+    }
+
+    public void setData(SubscribeJSON data) {
+        this.data = data;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
 }
